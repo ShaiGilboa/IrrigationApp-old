@@ -12,7 +12,7 @@ const QuoteApp : React.FC<props> = () => {
     <Wrapper>
       QuoteApp
       <DragNDrop>
-        <div>hrello</div>
+        <div>hello</div>
         <div>2</div>
       </DragNDrop>
     </Wrapper>
