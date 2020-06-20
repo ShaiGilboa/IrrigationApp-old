@@ -1,30 +1,16 @@
 import React, { PropsWithChildren, MouseEvent } from 'react';
 import styled from 'styled-components';
+import { MouseCoordinates } from './interfaces';
 
 interface props {
   // children: React.ReactChild
 };
 
-interface WrapperCoordinates {
-  top : number,
-  left : number
-}
-
-interface MouseCoordinates {
-  x : number,
-  y : number
-}
-
-interface WrapperProps {
-  topProp: string;
-  leftProp: string;
-}
-
 const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
   const [mouseCoordinates, setMouseCoordinates] = React.useState<MouseCoordinates | null>(null)
   const [isMouseDown, setIsMouseDown] = React.useState<boolean>(false);
-  const [wrapperLeft, setWrapperLeft] = React.useState<string | undefined>(undefined);
-  const [wrapperTop, setWrapperTop] = React.useState<string | undefined>(undefined);
+  const [wrapperLeft, setWrapperLeft] = React.useState<string | undefined>('0');
+  const [wrapperTop, setWrapperTop] = React.useState<string | undefined>('0');
 
   const wrapperRef = React.useRef<HTMLDivElement>(null)
 
@@ -69,11 +55,14 @@ const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
   }
 
   React.useEffect(() => {
-    if(wrapperRef && wrapperRef.current){
-      const top = wrapperRef.current.getBoundingClientRect().top;
-      const left = wrapperRef.current.getBoundingClientRect().left;
-      setWrapperTop(top.toString());
-      setWrapperLeft(left.toString());
+    // if(wrapperRef && wrapperRef.current){
+      // const top = wrapperRef.current.getBoundingClientRect().top;
+      // const left = wrapperRef.current.getBoundingClientRect().left;
+      // setWrapperTop(top.toString());
+      // setWrapperLeft(left.toString());
+      if(wrapperRef){
+      setWrapperTop('0');
+      setWrapperLeft('0');
     }
   },[wrapperRef])
 
@@ -96,12 +85,7 @@ const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
       style={(wrapperTop && wrapperLeft) ? {top:wrapperTop+'px', left:wrapperLeft+'px'} : undefined}
 
     >
-      <>
       {children}
-      </>
-  <p>wrapperCor: {(wrapperTop && wrapperLeft) && (<span>top: {wrapperTop} left: {wrapperLeft}</span>)}</p>
-      <p>mouseCor: {mouseCoordinates ? (<span>x: {mouseCoordinates.x} y: {mouseCoordinates.y}</span>) : (<span>none</span>)}</p>
-
     </Wrapper>
   )
 }
@@ -109,11 +93,12 @@ const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
 export default DragNDrop;
 
 const Wrapper = styled.div`
-  width: 200px;
-  height: 200px;
+  width: fit-content;
+  height: fit-content;
+  display: inline-block;
   border: 1px solid red;
   color: blue;
-  position: absolute;
+  position: relative;
   &:hover {
     cursor: -webkit-grab;
     cursor: grab;

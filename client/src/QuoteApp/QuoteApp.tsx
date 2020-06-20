@@ -11,9 +11,53 @@ const QuoteApp : React.FC<props> = () => {
   return (
     <Wrapper>
       QuoteApp
+      <ul
+        // style={{margin:0, padding:0, listStyleType: 'none'}}
+      >
+        <li
+        // style={{margin:0, padding:0}}
+        >
+          <DragNDrop>
+          <div>hello</div>
+          <div>2</div>
+          </DragNDrop>
+        </li>
+        <li
+        // style={{margin:0, padding:0}}
+        >
+          <DragNDrop>
+          <div>hello</div>
+          <div>2</div>
+          </DragNDrop>
+        </li>
+        <li
+        // style={{margin:0, padding:0}}
+        >
+          <DragNDrop>
+          <div>hello</div>
+          <div>2</div>
+          </DragNDrop>
+        </li>
+        <li
+        // style={{margin:0, padding:0}}
+        >
+          <DragNDrop>
+          <div>hello</div>
+          <div>2</div>
+          </DragNDrop>
+        </li>
+      </ul>
+
+      <div>
+        test
+        <p>test2</p>
+      </div>
+
       <DragNDrop>
-        <div>hello</div>
-        <div>2</div>
+        <div>test</div>
+        <DragNDrop>
+          <p>test2</p>
+        </DragNDrop>
       </DragNDrop>
     </Wrapper>
   )
