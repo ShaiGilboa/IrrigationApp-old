@@ -4,9 +4,11 @@ import { MouseCoordinates } from './interfaces';
 
 interface props {
   // children: React.ReactChild
+  // onClick? : any,
 };
 
-const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
+// const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
+  const DragNDrop : React.FC= ({children} : any) => {
   const [mouseCoordinates, setMouseCoordinates] = React.useState<MouseCoordinates | null>(null)
   const [isMouseDown, setIsMouseDown] = React.useState<boolean>(false);
   const [wrapperLeft, setWrapperLeft] = React.useState<string | undefined>('0');
@@ -96,15 +98,19 @@ const Wrapper = styled.div`
   width: fit-content;
   height: fit-content;
   display: inline-block;
-  border: 1px solid red;
-  color: blue;
   position: relative;
   &:hover {
     cursor: -webkit-grab;
     cursor: grab;
   }
   &:active {
+    /* color: red; */
+    cursor: -moz-grabbing;
     cursor: -webkit-grabbing;
-    cursor: grabbing; 
+    cursor: grabbing;
+    /* cursor: url(./pinch.png), grabbing; */
+  }
+  &:focus-visible {
+    color: blue;
   }
 `;
