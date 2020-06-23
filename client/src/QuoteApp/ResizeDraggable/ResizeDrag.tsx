@@ -168,7 +168,14 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
 export default ResizeDrag;
 
 const Wrapper = styled.div`
-  position: absolute;
+/* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+/* Hide scrollbar for IE and Edge */
+  -ms-overflow-style: none;
+
+  /* position: absolute; */
   /* top: 0; */
   /* left: 0; */
   display: flex;
@@ -179,6 +186,7 @@ const Wrapper = styled.div`
   } */
   background: skyblue;
   /* border-radius: 50%; */
+  overflow: auto;
 `;
 const DragBox = styled.div`
   position: absolute;
@@ -186,7 +194,7 @@ const DragBox = styled.div`
   right: 0;
   width: 20px;
   height: 20px;
-  z-index: 5;
+  /* z-index: 5; */
   background: pink;
   &:hover{
     cursor: grab;
