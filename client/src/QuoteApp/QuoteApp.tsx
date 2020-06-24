@@ -31,7 +31,6 @@ const QuoteApp : React.FC<props> = () => {
           </DragableContent>
         </ResizeDrag>
       </DragStorage>
-      
       <SprinklerMenu />
     </Wrapper>
   )

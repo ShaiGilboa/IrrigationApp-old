@@ -151,14 +151,16 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       }}
       >
       {children}
-      <DragBox
-        style={{cursor:`${resizeState.isResizing? 'grabbing': 'pointer'}`}}
+      <ResizeBox
+        // style={{cursor:`${resizeState.isResizing? 'grabbing': 'pointer'}`}}
         onMouseDown={(e:MouseEvent)=> {
           e.preventDefault();
           e.stopPropagation();
           mouseDownResize(e);
         }}
-      />
+      >
+        <ResizeUI />
+      </ResizeBox>
     </Wrapper>
   )
 }
@@ -166,35 +168,49 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
 export default ResizeDrag;
 
 const Wrapper = styled.div`
-/* Hide scrollbar for Chrome, Safari and Opera */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: skyblue; */
+  position: absolute;
+
+  /* scroll bar stuff */
+  overflow: auto;
+  /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: none;
   }
 /* Hide scrollbar for IE and Edge */
   -ms-overflow-style: none;
-
-  /* position: absolute; */
-  /* top: 0; */
-  /* left: 0; */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* &:hover{
-    cursor: grab;
-  } */
-  background: skyblue;
-  /* border-radius: 50%; */
-  overflow: auto;
+  &:hover {
+    div {
+      visibility: visible;
+    }
+  }
 `;
-const DragBox = styled.div`
+const ResizeBox = styled.div`
   position: absolute;
+  /* visibility: hidden; */
+  /* border: 1px solid red; */
+  overflow: hidden;
   bottom: 0;
   right: 0;
-  width: 20px;
-  height: 20px;
-  /* z-index: 5; */
-  background: pink;
+  width: 10px;
+  height: 10px;
   &:hover{
-    cursor: grab;
+    cursor: nwse-resize;
+    cursor: nw-resize;
   }
+`;
+
+const ResizeUI = styled.div`
+  background: transparent;
+  visibility: hidden;
+  position: absolute;
+  left: -5px;
+  top: 5px;
+  width: 25px;
+  height: 2px;
+  transform: rotate(-45deg);
+  border: 1px grey solid;
 `;

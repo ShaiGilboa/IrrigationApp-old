@@ -80,6 +80,8 @@ const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
 export default DragNDrop;
 
 const Wrapper = styled.div`
+border: 1px blue solid;
+padding: 2px;
   position: relative;
   width: fit-content;
   height: fit-content;

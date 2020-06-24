@@ -19,12 +19,17 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = () => {
   return (
     <Wrapper>
       <Sprinkler>
-        <DragNDrop
-          // ref={testRef}
-        >
+        <DragNDrop>
         <Popup 
         onMouseDown={clickHandler}
-        style={{height:'30px'}}/>
+        style={{height:'30px', border:'1px red solid'}}/>
+        </DragNDrop>
+      </Sprinkler>
+      <Sprinkler>
+        <DragNDrop>
+        <Popup 
+        onMouseDown={clickHandler}
+        style={{height:'30px', border:'1px red solid'}}/>
         </DragNDrop>
       </Sprinkler>
     </Wrapper>
@@ -35,6 +40,7 @@ export default SprinklerMenu;
 
 const Wrapper = styled.ul`
   list-style-type: none;
+  border: 1px green solid;
 `;
 
 const Sprinkler = styled.li`
