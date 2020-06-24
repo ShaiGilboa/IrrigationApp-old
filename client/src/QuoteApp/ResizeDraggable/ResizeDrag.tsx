@@ -21,10 +21,11 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
   })
   //FOR DRAGGING
   const [dragState, setDragState] = useState({
-    isDragging: false,
+    // isDragging: false,
     translateX: startX,
     translateY: startY
   });
+  const [isDrag, setIsDrag] = useState<boolean>(false);
   //FOR RESIZE
   const [resizeState, setResizeState] = useState({
     // isResizing: false,
@@ -36,7 +37,7 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
 ////////////////////
 //////DRAGGING//////
   const mouseDownDrag = useCallback(({clientX, clientY}): void => {
-    console.log('drag');
+    // console.log('drag');
     setMouseLoc({
       mouseX: clientX, 
       mouseY: clientY,
@@ -47,47 +48,54 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       initialWidth: resizeState.resizeWidth,
       initialHeight: resizeState.resizeHeight
     })
-    setDragState({
-      ...dragState, 
-      isDragging: true
-    });
-  }, [dragState]);
+    // setDragState({
+    //   ...dragState, 
+    //   isDragging: true
+    // });
+    setIsDrag(true);
+  }, [isDrag]);
+  // }, [dragState]);
 
   const mouseMoveDrag = useCallback( ( {clientX, clientY} ): void => {
-    if(dragState.isDragging){
+    // if(dragState.isDragging){
+      if(isDrag){
       setDragState(oldState => ({
         ...oldState, 
         translateX: initialValues.initialX + (clientX - mouseLoc.mouseX),  
         translateY: initialValues.initialY + (clientY - mouseLoc.mouseY)
       }));
     }
-  }, [dragState]);
+  }, [dragState, isDrag]);
 
   const mouseUpDrag = useCallback((): void => {
-    if(dragState.isDragging){
-      setDragState({
-      ...dragState, 
-      isDragging: false
-      });
+    if(isDrag){
+      // if(dragState.isDragging){
+      // setDragState({
+      // ...dragState, 
+      // isDragging: false
+      // });
+      setIsDrag(false)
     }
-  }, [dragState]);
+  }, [dragState, isDrag]);
 
   useEffect(() => {
     // console.log('drag on');
-    window.addEventListener('mousemove', mouseMoveDrag);
-    window.addEventListener('mouseup', mouseUpDrag);
+    if(isDrag){
+      window.addEventListener('mousemove', mouseMoveDrag);
+      window.addEventListener('mouseup', mouseUpDrag);
+    }
     return () => {
       // console.log('drag off');
       window.removeEventListener('mousemove', mouseMoveDrag);
       window.removeEventListener('mouseup', mouseUpDrag);
     }
   //functions in dependancy array: useeffect only fires if function CHANGES (which only happens on isDragging toggle, due to useCallback)
-  }, [mouseMoveDrag, mouseUpDrag]);
+  }, [mouseMoveDrag, mouseUpDrag, isDrag]);
 
 /////////////////////
 //////RESIZING///////
   const mouseDownResize = useCallback(({clientX, clientY}): void => {
-    console.log('resize');
+    // console.log('resize');
     setMouseLoc({
       mouseX: clientX, 
       mouseY: clientY,
@@ -109,7 +117,7 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
     // console.log('isResize', isResize)
     if(isResize){
 
-      console.log('test move')
+      // console.log('test move')
       // if(resizeState.isResizing){
       // console.log('clientX - initialResize.initialX', clientX - initialResize.initialX);
       setResizeState({
@@ -133,7 +141,7 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
   }, [isResize]);
 
   useEffect(() => {
-    console.log('isResize - effect', isResize)
+    // console.log('isResize - effect', isResize)
   //   if(isResize){
   //     console.log('resize on', isResize);
   //   window.addEventListener('mousemove', mouseMoveResize);
@@ -148,7 +156,7 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
     window.addEventListener('mouseup', mouseUpResize);
   }
     return () => {
-      console.log('resize off');
+      // console.log('resize off');
       window.removeEventListener('mousemove', mouseMoveResize);
       window.removeEventListener('mouseup', mouseUpResize);
     }
@@ -162,7 +170,8 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       transform: `translate(${dragState.translateX}px, ${dragState.translateY}px)`,
       width:`${(resizeState.resizeWidth > 10)? resizeState.resizeWidth : 10}px`, 
       height:`${(resizeState.resizeHeight > 10)? resizeState.resizeHeight : 10}px`,
-      cursor:`${dragState.isDragging? 'grabbing': 'grab'}`
+      cursor:`${isDrag? 'grabbing': 'grab'}`
+      // cursor:`${dragState.isDragging? 'grabbing': 'grab'}`
       }}
       onMouseDown={(e: MouseEvent)=> {
         // console.log('mousedown');
