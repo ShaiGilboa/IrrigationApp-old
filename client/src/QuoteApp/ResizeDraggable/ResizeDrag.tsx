@@ -27,10 +27,11 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
   });
   //FOR RESIZE
   const [resizeState, setResizeState] = useState({
-    isResizing: false,
+    // isResizing: false,
     resizeWidth: startWidth,
     resizeHeight: startHeight
   });
+  const [isResize, setIsResize] = useState<boolean>(false)
 
 ////////////////////
 //////DRAGGING//////
@@ -96,14 +97,20 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       initialWidth: resizeState.resizeWidth,
       initialHeight: resizeState.resizeHeight
     })
-    setResizeState({
-      ...resizeState, 
-      isResizing: true
-    });
-  }, [resizeState, initialValues]);
+    // setResizeState({
+    //   ...resizeState, 
+    //   isResizing: true
+    // });
+    setIsResize(true)
+  }, [isResize, initialValues]);
 
   const mouseMoveResize = useCallback( ({clientX, clientY}): void => {
-    if(resizeState.isResizing){
+    // console.log('test move ore')
+    // console.log('isResize', isResize)
+    if(isResize){
+
+      console.log('test move')
+      // if(resizeState.isResizing){
       // console.log('clientX - initialResize.initialX', clientX - initialResize.initialX);
       setResizeState({
         ...resizeState, 
@@ -112,28 +119,42 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       });
       
     };
-  }, [resizeState]);
+  }, [resizeState, isResize]);
 
   const mouseUpResize = useCallback((): void => {
-    if(resizeState.isResizing){
-      setResizeState({
-        ...resizeState, 
-        isResizing: false
-      });
+    if(isResize){
+      // if(resizeState.isResizing){
+      // setResizeState({
+      //   ...resizeState, 
+      //   isResizing: false
+      // });
+      setIsResize(false)
     }
-  }, [resizeState]);
+  }, [isResize]);
 
   useEffect(() => {
-    // console.log('resize on');
+    console.log('isResize - effect', isResize)
+  //   if(isResize){
+  //     console.log('resize on', isResize);
+  //   window.addEventListener('mousemove', mouseMoveResize);
+  //   window.addEventListener('mouseup', mouseUpResize);
+  // }else{
+  //     console.log('resize off');
+  //     window.removeEventListener('mousemove', mouseMoveResize);
+  //     window.removeEventListener('mouseup', mouseUpResize);
+  //   }
+  if(isResize){
     window.addEventListener('mousemove', mouseMoveResize);
     window.addEventListener('mouseup', mouseUpResize);
+  }
     return () => {
-      // console.log('resize off');
+      console.log('resize off');
       window.removeEventListener('mousemove', mouseMoveResize);
       window.removeEventListener('mouseup', mouseUpResize);
     }
   //functions in dependancy array: useeffect only fires if function CHANGES (which only happens on isResizing toggle, due to useCallback)
-  }, [mouseMoveResize, mouseUpResize]);
+  }, [   isResize]);
+  // }, [mouseMoveResize, mouseUpResize]);
 
 
   return (
