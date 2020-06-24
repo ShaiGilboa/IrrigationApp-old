@@ -1,89 +1,63 @@
-import React, { PropsWithChildren, MouseEvent } from 'react';
+import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import { MouseCoordinates } from './interfaces';
 
 interface props {
-  // children: React.ReactChild
+  
 };
 
 const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
-  const [mouseCoordinates, setMouseCoordinates] = React.useState<MouseCoordinates | null>(null)
+  // const componentRef = React.useRef<any>(null)
+  // const [currentValues, setCurrentValues] = React.useState<any>({left: 0, top: 0});
+  const [translateValues, setTranslateValues] = React.useState<any>({x:0, y:0})
+  const [mouseCoordinates, setMouseCoordinates] = React.useState<MouseCoordinates>({x:0, y:0})
+  const [translateUpToNow, setTranslateUpToNow] = React.useState<any>({x:0, y:0})
   const [isMouseDown, setIsMouseDown] = React.useState<boolean>(false);
-  const [wrapperLeft, setWrapperLeft] = React.useState<string | undefined>('0');
-  const [wrapperTop, setWrapperTop] = React.useState<string | undefined>('0');
-
-  const wrapperRef = React.useRef<HTMLDivElement>(null)
-
-  const mouseDownHandler = (event : any) : void => {
-    setIsMouseDown(true);
-    setMouseCoordinates({
-      x: event.clientX,
-      y: event.clientY
+  
+  // setting the position of everything for the start of the drag
+  const drag = React.useCallback(({clientX, clientY}) : void => {
+    setTranslateUpToNow({
+      x: translateValues.x,
+      y: translateValues.y
     })
-  }
+    setMouseCoordinates({
+      x: clientX,
+      y: clientY
+    })
+    setIsMouseDown(true)
+  }, [isMouseDown, , mouseCoordinates])
 
-  const mouseMoveHandler  = (event : any) => {
-    document.addEventListener('mouseup',mouseupHandler);
-    if((isMouseDown && mouseCoordinates && wrapperLeft) && event.clientX !== mouseCoordinates.x) {
-      const valueX = (Number(wrapperLeft || 0) + (event.clientX - mouseCoordinates.x)).toString();
-      setWrapperLeft(valueX)
-      setMouseCoordinates({
-        ...mouseCoordinates,
-        x:event.clientX,
+  const mouseMove = React.useCallback(({clientX, clientY}) : void =>{
+    if(isMouseDown && mouseCoordinates){
+      setTranslateValues({
+        x: translateUpToNow.x + (clientX - mouseCoordinates.x),
+        y: translateUpToNow.y + (clientY - mouseCoordinates.y)  
       })
     }
-    if((isMouseDown && mouseCoordinates && wrapperTop) && event.clientY !== mouseCoordinates.y) {
-      const valueY = (Number(wrapperTop || 0) + (event.clientY-mouseCoordinates.y)).toString()
-      setWrapperTop(valueY)
-      setMouseCoordinates({
-        ...mouseCoordinates,
-        y:event.clientY,
-      })
-    }
-    document.removeEventListener('mousemove', mouseMoveHandler)
-    document.addEventListener('mousemove', mouseMoveHandler)
-  }
+  }, [isMouseDown, mouseCoordinates])
 
-  const mouseupHandler = (event : any) => {
-    setMouseCoordinates({
-      x: event.clientX,
-      y: event.clientY,
-    })
-    setIsMouseDown(false);
-    document.removeEventListener('mouseup',mouseupHandler)
-    document.removeEventListener('mousemove', mouseMoveHandler)
-  }
-
-  React.useEffect(() => {
-    // if(wrapperRef && wrapperRef.current){
-      // const top = wrapperRef.current.getBoundingClientRect().top;
-      // const left = wrapperRef.current.getBoundingClientRect().left;
-      // setWrapperTop(top.toString());
-      // setWrapperLeft(left.toString());
-      if(wrapperRef){
-      setWrapperTop('0');
-      setWrapperLeft('0');
-    }
-  },[wrapperRef])
+  const mouseUp = React.useCallback(({clientX, clientY}): void => {
+    setIsMouseDown(false)
+  }, [isMouseDown])
 
   React.useEffect(()=>{
-    if(isMouseDown){
-      document.addEventListener('mousemove',mouseMoveHandler)
-    } else {
-      document.removeEventListener('mousemove', mouseMoveHandler)
+    window.addEventListener('mousemove', mouseMove)
+    window.addEventListener('mouseup', mouseUp)
+
+    return () => {
+      window.removeEventListener('mousemove', mouseMove)
+      window.removeEventListener('mouseup', mouseUp)
     }
-  },[isMouseDown])
+  },[isMouseDown, mouseMove, mouseUp])
 
   return (
     <Wrapper
-      ref={wrapperRef}
+      style={{transform: `translate(${translateValues.x}px, ${translateValues.y}px)`}}
       onMouseDown={(event)=>{
         event.preventDefault();
-        event.stopPropagation()
-        mouseDownHandler(event)
+        event.stopPropagation();
+        drag(event);
       }}
-      style={(wrapperTop && wrapperLeft) ? {top:wrapperTop+'px', left:wrapperLeft+'px'} : undefined}
-
     >
       {children}
     </Wrapper>
@@ -93,18 +67,13 @@ const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
 export default DragNDrop;
 
 const Wrapper = styled.div`
+  position: relative;
   width: fit-content;
   height: fit-content;
-  display: inline-block;
-  border: 1px solid red;
-  color: blue;
-  position: relative;
-  &:hover {
-    cursor: -webkit-grab;
+  &:hover{
     cursor: grab;
   }
-  &:active {
-    cursor: -webkit-grabbing;
-    cursor: grabbing; 
+  &:active{
+    cursor: grabbing;
   }
 `;
