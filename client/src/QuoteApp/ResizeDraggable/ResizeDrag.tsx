@@ -8,16 +8,16 @@ interface props {
   startHeight: number,
 };
 const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startWidth, startHeight, children}) => {
+  const [mouseLoc, setMouseLoc] = useState({
+    mouseX: 0,
+    mouseY: 0
+  })
   //INITIAL
   const [initialValues, setInitialValues] = useState({
     initialX: 0,
     initialY: 0,
     initialWidth: startWidth,
     initialHeight: startHeight
-  })
-  const [mouseLoc, setMouseLoc] = useState({
-    mouseX: 0,
-    mouseY: 0
   })
   //FOR DRAGGING
   const [dragState, setDragState] = useState({
@@ -52,7 +52,6 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
     });
   }, [dragState]);
 
-  //make sure client values 
   const mouseMoveDrag = useCallback( ( {clientX, clientY} ): void => {
     if(dragState.isDragging){
       setDragState(oldState => ({
@@ -86,7 +85,6 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
 
 /////////////////////
 //////RESIZING///////
-
   const mouseDownResize = useCallback(({clientX, clientY}): void => {
     console.log('resize');
     setMouseLoc({
@@ -134,7 +132,7 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       window.removeEventListener('mousemove', mouseMoveResize);
       window.removeEventListener('mouseup', mouseUpResize);
     }
-  //functions in dependancy array: useeffect only fires if function CHANGES (which only happens on isDragging toggle, due to useCallback)
+  //functions in dependancy array: useeffect only fires if function CHANGES (which only happens on isResizing toggle, due to useCallback)
   }, [mouseMoveResize, mouseUpResize]);
 
 
