@@ -7,10 +7,11 @@ interface props {
   
 };
 
-const test : React.FC<PropsWithChildren<props>> = ({children}) => {
+const Test : React.FC<PropsWithChildren<props>> = ({children}) => {
   const componentRef = React.useRef<any>(null)
-  const [currentValues, setCurrentValues] = React.useState<any>({left: null, top: null});
-  const [mouseCoordinates, setMouseCoordinates] = React.useState<MouseCoordinates | null>(null)
+  const [currentValues, setCurrentValues] = React.useState<any>({left: 0, top: 0});
+  const [translateValues, setTranslateValues] = React.useState<any>({x:0, y:0})
+  const [mouseCoordinates, setMouseCoordinates] = React.useState<MouseCoordinates>({x:0, y:0})
   const [isMouseDown, setIsMouseDown] = React.useState<boolean>(false);
 
   // set the initial values once the component mounts
@@ -28,43 +29,66 @@ const test : React.FC<PropsWithChildren<props>> = ({children}) => {
       x: clientX,
       y: clientY
     })
-    if(componentRef != null && componentRef.current != null) {
-      setCurrentValues({
-      left: componentRef.current.left,
-      top: componentRef.current.top
-    })}
     setIsMouseDown(true)
-  }, [setIsMouseDown, componentRef, setCurrentValues, setMouseCoordinates])
+  }, [isMouseDown, , mouseCoordinates])
 
   const mouseMove = React.useCallback(({clientX, clientY}) : void =>{
     if(isMouseDown && mouseCoordinates){
-      setCurrentValues((previousValues : any) => ({
-        x: previousValues.x + (clientX - mouseCoordinates.x),
-        y: previousValues.y + (clientY - mouseCoordinates.y)  
-      }))
+      setTranslateValues({
+        x: currentValues.left + (clientX - mouseCoordinates.x),
+        y: currentValues.top + (clientY - mouseCoordinates.y)  
+      })
     }
-  }, [isMouseDown, mouseCoordinates])
+  }, [isMouseDown, mouseCoordinates, currentValues])
+
+  const mouseUp = React.useCallback((): void => {
+    setIsMouseDown(false)
+  }, [isMouseDown])
+
+  React.useEffect(()=>{
+    window.addEventListener('mousemove', mouseMove)
+    window.addEventListener('mouseup', mouseUp)
+
+    return () => {
+      window.removeEventListener('mousemove', mouseMove)
+      window.removeEventListener('mouseup', mouseUp)
+    }
+  },[isMouseDown, mouseMove, mouseUp])
 
   return (
     <Wrapper
       ref={componentRef}
-      style={{left:`${currentValues.left}px;`, top:`${currentValues.top}px;`}}
+      style={{transform: `translate(${translateValues.x}px, ${translateValues.y}px)`}}
+      // style={{left:`${currentValues.left}px`, top:`${currentValues.top}px`}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
         drag(event);
       }}
     >
+      <p>
+        currentValues: T {currentValues.top} L {currentValues.left}
+        </p>
+        <p>
+        translateVlaues: X:{translateValues.x} Y:{translateValues.y}
+        </p>
+        <p>
+        MouseCoordinates: X:{mouseCoordinates.x} Y:{mouseCoordinates.y}
+        </p>
       DragNDroptest
       {children}
     </Wrapper>
   )
 }
 
-export default test;
+export default Test;
 
 const Wrapper = styled.div`
   position: relative;
   width: fit-content;
   height: fit-content;
+  border: 1px solid red;
+  &:hover{
+    cursor: grab;
+  }
 `;

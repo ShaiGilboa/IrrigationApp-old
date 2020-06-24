@@ -2,8 +2,8 @@ import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import DragNDrop from './components/DragNDrop';
 import SprinklerMenu from './components/SprinklerMenu/SprinklerMenu';
-
 import ResizeDrag from './ResizeDraggable/ResizeDrag';
+import Test from './components/DragNDrop/test';
 
 interface props {
   
@@ -14,8 +14,8 @@ const QuoteApp : React.FC<props> = () => {
   return (
     <Wrapper>
       QuoteApp
-
-      <DragStorage>
+      <Test />
+      {/* <DragStorage>
         <ResizeDrag 
           startX={50}
           startY={50}
@@ -34,7 +34,7 @@ const QuoteApp : React.FC<props> = () => {
         </ResizeDrag>
       </DragStorage>
       
-      <SprinklerMenu />
+      <SprinklerMenu /> */}
     </Wrapper>
   )
 }
