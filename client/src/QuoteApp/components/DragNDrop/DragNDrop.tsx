@@ -34,6 +34,8 @@ interface props {
   
   const [canDrop, setCanDrop] = React.useState<boolean>(false);
 
+  const [dropState, setDropState] = React. useState<boolean>(true)
+
   const thisRef = React.useRef<HTMLDivElement | null>(null);
 
   // setting the position of everything for the start of the drag
@@ -69,15 +71,19 @@ interface props {
       thisRect = thisRef.current.getBoundingClientRect();
     }
     setCanDrop(checkDropZone(thisRect ,dropZone))
-  }, [translateValues, translateUpToNow])
+  }, [translateValues, translateUpToNow, dropZone])
 
   React.useEffect(()=>{
-    if(canDrop){
-      console.log('test - canDrop')
+    if(isMouseDown){
+      if(canDrop){
+        setDropState(true)
+      } else {
+        setDropState(false)
+      }
     } else {
-      console.log('testNONONONONONO')
+      setDropState(true);
     }
-  },[canDrop])
+  },[canDrop, isMouseDown])
 
   // when the mouse is up, set flag to false 
   const mouseUp = React.useCallback((): void => {
@@ -104,12 +110,14 @@ interface props {
       window.removeEventListener('mouseup', mouseUp)
     }
   },[isMouseDown, mouseUp, canDrop])
-
+  // console.log('isMousedown', isMouseDown);
+  // console.log('canDrop', canDrop)
+  // console.log('dropState', dropState)
   return (
     <Wrapper
       ref={thisRef}
     // the movement of the component is by translate
-      style={{transform: `translate(${translateValues.x}px, ${translateValues.y}px)`}}
+      style={{transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : 'red'}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
