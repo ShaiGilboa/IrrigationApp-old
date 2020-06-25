@@ -10,10 +10,23 @@ interface props {
 
 const QuoteApp : React.FC<props> = () => {
 
+  const dragStorageRef = React.useRef<HTMLDivElement>(null);
+  let [dropZone, setDropZone] = React.useState<DOMRect | null>(null);
+  React.useEffect(()=>{
+    // let buffer:React.MutableRefObject<any>= dragStorageRef;
+    // if(dragStorageRef !== null) buffer = dragStorageRef;
+    if(dragStorageRef !== null && dragStorageRef.current !== null){
+      setDropZone(dragStorageRef.current.getBoundingClientRect())
+    } else {
+      dropZone = null;
+    }
+  },[dragStorageRef])
   return (
     <Wrapper>
       QuoteApp
-      <DragStorage>
+      <DragStorage
+        ref={dragStorageRef}
+      >
         <ResizeDrag 
           startX={50}
           startY={50}
@@ -31,7 +44,9 @@ const QuoteApp : React.FC<props> = () => {
           </DragableContent>
         </ResizeDrag>
       </DragStorage>
-      <SprinklerMenu />
+      <SprinklerMenu 
+        dropZone={dropZone}
+      />
     </Wrapper>
   )
 }

@@ -1,37 +1,55 @@
+import ReactDOM from 'react-dom';
 import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import DragNDrop from '../DragNDrop';
-import { ReactComponent as Popup } from './assets/sprinkle-svgrepo-com.svg';
+import Popup  from './assets/sprinkle-svgrepo-com.svg';
+// import { ReactComponent as Popup } from './assets/sprinkle-svgrepo-com.svg';
 import { ReactComponent as Rotter } from './assets/sprinkler.svg';
 
 interface props {
-  
+  dropZone: DOMRect | null,
 };
 
-const SprinklerMenu : React.FC<PropsWithChildren<props>> = () => {
-  const testRef = React.useRef(null)
+const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone}) => {
+  const arr = [Popup, Popup]
+  const testRef = React.useRef<any>(null)
   const clickHandler = (event : any) => {
     // event.preventDefault();
     // console.log('test')
-    console.log('event', event.target)
+    // console.log('event', event.target)
+    console.log('testRef.current', testRef.current.clientWidth)
+    const maybe = React.createElement('DragNDrop',{})
   }
+  React.useEffect(()=>{
+    console.log('dropZone', dropZone)
 
+  }, [dropZone])
   return (
-    <Wrapper>
+    <Wrapper ref={testRef}>
+      {/* {arr.map((src, index)=><Sprinkler key={index}>
+        <DragNDrop limit={testRef.current}>
+          <img src={src} onMouseDown={clickHandler} style={{height:'30px'}}/>
+        </DragNDrop>
+      </Sprinkler>)} */}
       <Sprinkler>
-        <DragNDrop>
-        <Popup 
-        onMouseDown={clickHandler}
-        style={{height:'30px', border:'1px red solid'}}/>
+        <DragNDrop dropZone={dropZone}>
+          <img src={Popup} onMouseDown={clickHandler} style={{height:'30px'}}/>
+        </DragNDrop>
+      </Sprinkler>
+      {/* <Sprinkler>
+        <DragNDrop
+          // ref={testRef}
+        >
+          <img src={Popup} onMouseDown={clickHandler}
+        style={{height:'30px'}}/>
         </DragNDrop>
       </Sprinkler>
       <Sprinkler>
         <DragNDrop>
-        <Popup 
-        onMouseDown={clickHandler}
-        style={{height:'30px', border:'1px red solid'}}/>
+        <img src={Popup} onMouseDown={clickHandler}
+        style={{height:'30px'}}/>
         </DragNDrop>
-      </Sprinkler>
+      </Sprinkler> */}
     </Wrapper>
   )
 }
@@ -41,6 +59,9 @@ export default SprinklerMenu;
 const Wrapper = styled.ul`
   list-style-type: none;
   border: 1px green solid;
+  width: fit-content;
+  height: fit-content;
+  padding: 0;
 `;
 
 const Sprinkler = styled.li`

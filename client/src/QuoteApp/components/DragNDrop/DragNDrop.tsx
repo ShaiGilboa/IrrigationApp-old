@@ -2,14 +2,26 @@ import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import { Coordinates } from './interfaces';
 
+const checkDropZone = (currentLocation : DOMRect | null, dropZone : DOMRect | null) : boolean => {
+  if(!currentLocation || !dropZone) return true
+  if((currentLocation.left >= dropZone.left && currentLocation.right <= dropZone.right) && (currentLocation.top >= dropZone.top && currentLocation.bottom <= dropZone.bottom)){
+    return true
+  }
+  return false
+}
+
 interface props {
-  
+  // ref?: React.MutableRefObject<null>
+  dropZone: DOMRect | null,
 };
+
 
 // the movement is not dependent on knowing the location.
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
-const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
+// const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone}) => {
+
   // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
   // all the translations that have happened up to each iteration
@@ -20,6 +32,10 @@ const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
   // flag to know if the mouse has been clicked
   const [isMouseDown, setIsMouseDown] = React.useState<boolean>(false);
   
+  const [canDrop, setCanDrop] = React.useState<boolean>(false);
+
+  const thisRef = React.useRef<HTMLDivElement | null>(null);
+
   // setting the position of everything for the start of the drag
   const mouseDown = React.useCallback(({clientX, clientY}) : void => {
     setTranslateUpToNow({
@@ -46,10 +62,37 @@ const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
     }
   }, [isMouseDown, mouseCoordinates])
 
-  // when the mouse is up, set flag to false  
+  // check if we can drop the sprinkler in the zone
+  React.useEffect(()=>{
+    let thisRect : DOMRect | null = null;
+    if(thisRef !==null && thisRef.current !== null) {
+      thisRect = thisRef.current.getBoundingClientRect();
+    }
+    setCanDrop(checkDropZone(thisRect ,dropZone))
+  }, [translateValues, translateUpToNow])
+
+  React.useEffect(()=>{
+    if(canDrop){
+      console.log('test - canDrop')
+    } else {
+      console.log('testNONONONONONO')
+    }
+  },[canDrop])
+
+  // when the mouse is up, set flag to false 
   const mouseUp = React.useCallback((): void => {
     setIsMouseDown(false)
-  }, [isMouseDown])
+    if(!canDrop){
+      setTranslateValues({
+        x:0,
+        y:0
+      })
+      setTranslateUpToNow({
+        y:0,
+        x:0,
+      })
+    }
+  }, [isMouseDown, canDrop])
 
   // on click we start a new listener
   React.useEffect(()=>{
@@ -60,10 +103,11 @@ const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
       window.removeEventListener('mousemove', mouseMove)
       window.removeEventListener('mouseup', mouseUp)
     }
-  },[isMouseDown, mouseUp])
+  },[isMouseDown, mouseUp, canDrop])
 
   return (
     <Wrapper
+      ref={thisRef}
     // the movement of the component is by translate
       style={{transform: `translate(${translateValues.x}px, ${translateValues.y}px)`}}
       onMouseDown={(event)=>{
@@ -80,8 +124,8 @@ const DragNDrop : React.FC<PropsWithChildren<props>> = ({children}) => {
 export default DragNDrop;
 
 const Wrapper = styled.div`
-border: 1px blue solid;
-padding: 2px;
+/* border: 1px blue solid;
+padding: 2px; */
   position: relative;
   width: fit-content;
   height: fit-content;
