@@ -65,6 +65,7 @@ const Wrapper = styled.ul`
   width: fit-content;
   height: fit-content;
   padding: 0;
+  margin: 0;
 `;
 
 const Sprinkler = styled.li`

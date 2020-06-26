@@ -158,4 +158,8 @@ const Wrapper = styled.div`
   &:active{
     cursor: grabbing;
   }
+  /* img{
+    border: 1px solid orange;
+    margin: 0;
+  } */
 `;
