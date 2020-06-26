@@ -1,6 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import { Coordinates } from './interfaces';
+import { COLORS } from '../../../constants';
+
 
 const checkDropZone = (currentLocation : DOMRect | null, dropZone : DOMRect | null) : boolean => {
   if(!currentLocation || !dropZone) return true
@@ -129,7 +131,7 @@ interface props {
 
       ref={thisRef}
     // the movement of the component is by translate
-      style={{ ...style, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : 'red'}}
+      style={{ ...style, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
@@ -144,7 +146,7 @@ interface props {
 export default DragNDrop;
 
 const Wrapper = styled.div`
-/* border: 1px blue solid; */
+  border: 1px blue solid;
   margin: 0px;
   padding: 0px;
   position: relative;
