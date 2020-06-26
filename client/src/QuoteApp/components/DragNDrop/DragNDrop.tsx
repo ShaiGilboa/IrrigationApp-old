@@ -131,7 +131,7 @@ interface props {
   // console.log('dropState', dropState)
   return (
     <Wrapper
-
+      data-css="dragNdrop"
       ref={thisRef}
     // the movement of the component is by translate
       style={{ ...style, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : COLORS.MAROON}}
