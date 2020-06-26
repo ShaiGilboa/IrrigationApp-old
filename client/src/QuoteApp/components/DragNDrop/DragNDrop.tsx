@@ -10,9 +10,14 @@ const checkDropZone = (currentLocation : DOMRect | null, dropZone : DOMRect | nu
   return false
 }
 
+interface stringObj {
+  [key : string] : string
+}
+
 interface props {
   // ref?: React.MutableRefObject<null>
   dropZone: DOMRect | null,
+  style?: stringObj
 };
 
 
@@ -20,7 +25,7 @@ interface props {
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
 // const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
-  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone}) => {
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, style}) => {
 
   // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
@@ -88,14 +93,6 @@ interface props {
     } else {
       setDropState(true);
     }
-    console.log('isMouseDown', isMouseDown)
-    console.log('canDrop', canDrop)
-    // if(canDrop  && isMouseDown){
-    //   setDropState(true)
-    // } else {
-    //   setDropState(false)
-    // }
-
     // eslint-disable-next-line
   },[canDrop, isMouseDown])
 
@@ -129,9 +126,10 @@ interface props {
 
   return (
     <Wrapper
+
       ref={thisRef}
     // the movement of the component is by translate
-      style={{transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : 'red'}}
+      style={{ ...style, transform: `translate(${translateValues.x}px, ${translateValues.y}px)`, backgroundColor: dropState ? 'transparent' : 'red'}}
       onMouseDown={(event)=>{
         event.preventDefault();
         event.stopPropagation();
@@ -146,11 +144,14 @@ interface props {
 export default DragNDrop;
 
 const Wrapper = styled.div`
-/* border: 1px blue solid;
-padding: 2px; */
+/* border: 1px blue solid; */
+  margin: 0px;
+  padding: 0px;
   position: relative;
   width: fit-content;
   height: fit-content;
+  object-fit:contain;
+
   &:hover{
     cursor: grab;
   }

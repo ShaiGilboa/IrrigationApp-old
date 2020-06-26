@@ -29,8 +29,14 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone}) => {
         </DragNDrop>
       </Sprinkler>)} */}
       <Sprinkler>
-        <DragNDrop dropZone={dropZone}>
-          <img src={Popup} onMouseDown={clickHandler} style={{height:'30px'}} alt='popup-sparyhead'/>
+        <DragNDrop dropZone={dropZone}
+          style={{width:'30px', height:'30px'}}
+        >
+          <img src={Popup} onMouseDown={clickHandler} style={{
+            // height:'30px', 
+            margin:'0px', padding:'0px', 
+          // border:'1px solid red'
+          }} alt='popup-sparyhead'/>
         </DragNDrop>
       </Sprinkler>
       {/* <Sprinkler>
@@ -55,12 +61,14 @@ export default SprinklerMenu;
 
 const Wrapper = styled.ul`
   list-style-type: none;
-  border: 1px green solid;
+  /* border: 1px green solid; */
   width: fit-content;
   height: fit-content;
   padding: 0;
 `;
 
 const Sprinkler = styled.li`
-  height: 30px;
+  /* border: 1px green solid; */
+  height: fit-content;
+  width: fit-content;
 `;
