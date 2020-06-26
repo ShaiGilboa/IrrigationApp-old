@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Coordinates } from './interfaces';
 import { COLORS, DRAGSNAP } from '../../../constants';
 import { roundToNum } from '../../../utils';
+import Popup  from '../SprinklerMenu/assets/sprinkle-svgrepo-com.svg';
 
 
 const checkDropZone = (currentLocation : DOMRect | null, dropZone : DOMRect | null) : boolean => {
@@ -21,7 +22,7 @@ interface props {
   // ref?: React.MutableRefObject<null>
   dropZone: DOMRect | null,
   style?: stringObj,
-  src: any
+  src: string
 };
 
 
@@ -142,11 +143,7 @@ interface props {
         mouseDown(event);
       }}
     >
-      <img src={src}  style={{
-            // height:'30px', 
-            margin:'0px', padding:'0px', 
-          // border:'1px solid red'
-          }} alt='spray'/>
+      <img src={src || Popup} style={{margin:'0px', padding:'0px'}} alt='spray'/>
       {children}
     </Wrapper>
   )
