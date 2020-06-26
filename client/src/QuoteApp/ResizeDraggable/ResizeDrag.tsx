@@ -28,7 +28,6 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
   const [isDrag, setIsDrag] = useState<boolean>(false);
   //FOR RESIZE
   const [resizeState, setResizeState] = useState({
-    // isResizing: false,
     resizeWidth: startWidth,
     resizeHeight: startHeight
   });
@@ -37,7 +36,6 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
 ////////////////////
 //////DRAGGING//////
   const mouseDownDrag = useCallback(({clientX, clientY}): void => {
-    // console.log('drag');
     setMouseLoc({
       mouseX: clientX, 
       mouseY: clientY,
@@ -48,16 +46,11 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       initialWidth: resizeState.resizeWidth,
       initialHeight: resizeState.resizeHeight
     })
-    // setDragState({
-    //   ...dragState, 
-    //   isDragging: true
-    // });
     setIsDrag(true);
+    // eslint-disable-next-line
   }, [isDrag]);
-  // }, [dragState]);
 
   const mouseMoveDrag = useCallback( ( {clientX, clientY} ): void => {
-    // if(dragState.isDragging){
       if(isDrag){
       setDragState(oldState => ({
         ...oldState, 
@@ -65,17 +58,14 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
         translateY: initialValues.initialY + (clientY - mouseLoc.mouseY)
       }));
     }
+    // eslint-disable-next-line
   }, [dragState, isDrag]);
 
   const mouseUpDrag = useCallback((): void => {
     if(isDrag){
-      // if(dragState.isDragging){
-      // setDragState({
-      // ...dragState, 
-      // isDragging: false
-      // });
       setIsDrag(false)
     }
+    // eslint-disable-next-line
   }, [dragState, isDrag]);
 
   useEffect(() => {
@@ -90,12 +80,12 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       window.removeEventListener('mouseup', mouseUpDrag);
     }
   //functions in dependancy array: useeffect only fires if function CHANGES (which only happens on isDragging toggle, due to useCallback)
+    // eslint-disable-next-line
   }, [mouseMoveDrag, mouseUpDrag, isDrag]);
 
 /////////////////////
 //////RESIZING///////
   const mouseDownResize = useCallback(({clientX, clientY}): void => {
-    // console.log('resize');
     setMouseLoc({
       mouseX: clientX, 
       mouseY: clientY,
@@ -105,21 +95,12 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       initialWidth: resizeState.resizeWidth,
       initialHeight: resizeState.resizeHeight
     })
-    // setResizeState({
-    //   ...resizeState, 
-    //   isResizing: true
-    // });
-    setIsResize(true)
+    setIsResize(true);
+    // eslint-disable-next-line
   }, [isResize, initialValues]);
 
   const mouseMoveResize = useCallback( ({clientX, clientY}): void => {
-    // console.log('test move ore')
-    // console.log('isResize', isResize)
     if(isResize){
-
-      // console.log('test move')
-      // if(resizeState.isResizing){
-      // console.log('clientX - initialResize.initialX', clientX - initialResize.initialX);
       setResizeState({
         ...resizeState, 
         resizeWidth: initialValues.initialWidth + (clientX - mouseLoc.mouseX),
@@ -127,6 +108,7 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       });
       
     };
+    // eslint-disable-next-line
   }, [resizeState, isResize]);
 
   const mouseUpResize = useCallback((): void => {
@@ -138,6 +120,7 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       // });
       setIsResize(false)
     }
+    // eslint-disable-next-line
   }, [isResize]);
 
   useEffect(() => {
@@ -161,7 +144,8 @@ const ResizeDrag : React.FC<PropsWithChildren<props>> = ({startX, startY, startW
       window.removeEventListener('mouseup', mouseUpResize);
     }
   //functions in dependancy array: useeffect only fires if function CHANGES (which only happens on isResizing toggle, due to useCallback)
-  }, [   isResize]);
+    // eslint-disable-next-line  
+  }, [isResize]);
   // }, [mouseMoveResize, mouseUpResize]);
 
 

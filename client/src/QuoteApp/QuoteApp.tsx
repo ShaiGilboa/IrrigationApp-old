@@ -1,6 +1,6 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import DragNDrop from './components/DragNDrop';
+// import DragNDrop from './components/DragNDrop';
 import SprinklerMenu from './components/SprinklerMenu/SprinklerMenu';
 import ResizeDrag from './ResizeDraggable/ResizeDrag';
 
@@ -17,8 +17,6 @@ const QuoteApp : React.FC<props> = () => {
     // if(dragStorageRef !== null) buffer = dragStorageRef;
     if(dragStorageRef !== null && dragStorageRef.current !== null){
       setDropZone(dragStorageRef.current.getBoundingClientRect())
-    } else {
-      dropZone = null;
     }
   },[dragStorageRef])
   return (

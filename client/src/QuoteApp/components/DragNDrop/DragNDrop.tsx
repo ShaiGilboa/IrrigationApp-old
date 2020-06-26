@@ -34,7 +34,7 @@ interface props {
   
   const [canDrop, setCanDrop] = React.useState<boolean>(false);
 
-  const [dropState, setDropState] = React. useState<boolean>(true)
+  const [dropState, setDropState] = React.useState<boolean>(true)
 
   const thisRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -49,6 +49,7 @@ interface props {
       y: clientY
     })
     setIsMouseDown(true)
+    // eslint-disable-next-line
   }, [isMouseDown, translateUpToNow])
 
   // when the mouse moves the translations changes accordingly 
@@ -62,6 +63,7 @@ interface props {
         y: translateUpToNow.y + (clientY - mouseCoordinates.y)  
       })
     }
+    // eslint-disable-next-line
   }, [isMouseDown, mouseCoordinates])
 
   // check if we can drop the sprinkler in the zone
@@ -71,10 +73,13 @@ interface props {
       thisRect = thisRef.current.getBoundingClientRect();
     }
     setCanDrop(checkDropZone(thisRect ,dropZone))
+    // eslint-disable-next-line
   }, [translateValues, translateUpToNow, dropZone])
 
+  // checking weather or not the item is currently in an area
+  // it can be dropped at
   React.useEffect(()=>{
-    if(isMouseDown){
+    if(isMouseDown){ 
       if(canDrop){
         setDropState(true)
       } else {
@@ -83,6 +88,15 @@ interface props {
     } else {
       setDropState(true);
     }
+    console.log('isMouseDown', isMouseDown)
+    console.log('canDrop', canDrop)
+    // if(canDrop  && isMouseDown){
+    //   setDropState(true)
+    // } else {
+    //   setDropState(false)
+    // }
+
+    // eslint-disable-next-line
   },[canDrop, isMouseDown])
 
   // when the mouse is up, set flag to false 
@@ -98,6 +112,7 @@ interface props {
         x:0,
       })
     }
+    // eslint-disable-next-line
   }, [isMouseDown, canDrop])
 
   // on click we start a new listener
@@ -109,10 +124,9 @@ interface props {
       window.removeEventListener('mousemove', mouseMove)
       window.removeEventListener('mouseup', mouseUp)
     }
+    // eslint-disable-next-line
   },[isMouseDown, mouseUp, canDrop])
-  // console.log('isMousedown', isMouseDown);
-  // console.log('canDrop', canDrop)
-  // console.log('dropState', dropState)
+
   return (
     <Wrapper
       ref={thisRef}

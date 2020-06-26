@@ -1,24 +1,21 @@
-import ReactDOM from 'react-dom';
 import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import DragNDrop from '../DragNDrop';
 import Popup  from './assets/sprinkle-svgrepo-com.svg';
 // import { ReactComponent as Popup } from './assets/sprinkle-svgrepo-com.svg';
-import { ReactComponent as Rotter } from './assets/sprinkler.svg';
+// import { ReactComponent as Rotter } from './assets/sprinkler.svg';
 
 interface props {
   dropZone: DOMRect | null,
 };
 
 const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone}) => {
-  const arr = [Popup, Popup]
+  // const arr = [Popup, Popup]
   const testRef = React.useRef<any>(null)
   const clickHandler = (event : any) => {
-    // event.preventDefault();
-    // console.log('test')
-    // console.log('event', event.target)
+
     console.log('testRef.current', testRef.current.clientWidth)
-    const maybe = React.createElement('DragNDrop',{})
+    // const maybe = React.createElement('DragNDrop',{})
   }
   React.useEffect(()=>{
     console.log('dropZone', dropZone)
@@ -33,7 +30,7 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone}) => {
       </Sprinkler>)} */}
       <Sprinkler>
         <DragNDrop dropZone={dropZone}>
-          <img src={Popup} onMouseDown={clickHandler} style={{height:'30px'}}/>
+          <img src={Popup} onMouseDown={clickHandler} style={{height:'30px'}} alt='popup-sparyhead'/>
         </DragNDrop>
       </Sprinkler>
       {/* <Sprinkler>
