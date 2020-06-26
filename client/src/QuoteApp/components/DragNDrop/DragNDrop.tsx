@@ -1,7 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import { Coordinates } from './interfaces';
-import { COLORS } from '../../../constants';
+import { COLORS, DRAGSNAP } from '../../../constants';
+import { roundToNum } from '../../../utils';
 
 
 const checkDropZone = (currentLocation : DOMRect | null, dropZone : DOMRect | null) : boolean => {
@@ -66,8 +67,8 @@ interface props {
       // each coordinate is set to be the value of the start of drag
       // plus the sum of the movement of the mouse in relation to where it was clicked
       setTranslateValues({
-        x: translateUpToNow.x + (clientX - mouseCoordinates.x),
-        y: translateUpToNow.y + (clientY - mouseCoordinates.y)  
+        x: roundToNum(translateUpToNow.x + (clientX - mouseCoordinates.x), DRAGSNAP),
+        y: roundToNum(translateUpToNow.y + (clientY - mouseCoordinates.y), DRAGSNAP)  
       })
     }
     // eslint-disable-next-line
