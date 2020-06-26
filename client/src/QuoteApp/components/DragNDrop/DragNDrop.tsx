@@ -86,7 +86,7 @@ interface props {
   // checking weather or not the item is currently in an area
   // it can be dropped at
   React.useEffect(()=>{
-    if(isMouseDown){ 
+    if(isMouseDown){
       if(canDrop){
         setDropState(true)
       } else {
@@ -125,7 +125,9 @@ interface props {
     }
     // eslint-disable-next-line
   },[isMouseDown, mouseUp, canDrop])
-
+  // console.log('isMousedown', isMouseDown);
+  // console.log('canDrop', canDrop)
+  // console.log('dropState', dropState)
   return (
     <Wrapper
 
