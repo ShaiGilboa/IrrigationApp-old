@@ -20,7 +20,8 @@ interface stringObj {
 interface props {
   // ref?: React.MutableRefObject<null>
   dropZone: DOMRect | null,
-  style?: stringObj
+  style?: stringObj,
+  src: any
 };
 
 
@@ -28,7 +29,7 @@ interface props {
 // using transform: translate(Xpx, Ypx), means that the component
 // will move, but in RELATION to the starting point.
 // const DragNDrop : React.FC<PropsWithChildren<props>> = React.forwardRef({children}, ref) => { => { /********************** */
-  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, style}) => {
+  const DragNDrop : React.FC<PropsWithChildren<props>> = ({children, dropZone, style, src}) => {
 
   // how much the component will move on each drag
   const [translateValues, setTranslateValues] = React.useState<Coordinates>({x:0, y:0})
@@ -42,7 +43,7 @@ interface props {
   
   const [canDrop, setCanDrop] = React.useState<boolean>(false);
 
-  const [dropState, setDropState] = React. useState<boolean>(true)
+  const [dropState, setDropState] = React.useState<boolean>(true)
 
   const thisRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -141,6 +142,11 @@ interface props {
         mouseDown(event);
       }}
     >
+      <img src={src}  style={{
+            // height:'30px', 
+            margin:'0px', padding:'0px', 
+          // border:'1px solid red'
+          }} alt='spray'/>
       {children}
     </Wrapper>
   )

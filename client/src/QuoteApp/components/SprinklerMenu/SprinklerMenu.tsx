@@ -12,11 +12,7 @@ interface props {
 const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone}) => {
   // const arr = [Popup, Popup]
   const testRef = React.useRef<any>(null)
-  const clickHandler = (event : any) => {
 
-    console.log('testRef.current', testRef.current.clientWidth)
-    // const maybe = React.createElement('DragNDrop',{})
-  }
   React.useEffect(()=>{
     console.log('dropZone', dropZone)
 
@@ -31,12 +27,9 @@ const SprinklerMenu : React.FC<PropsWithChildren<props>> = ({dropZone}) => {
       <Sprinkler>
         <DragNDrop dropZone={dropZone}
           style={{width:'30px', height:'30px'}}
+          src={Popup}
         >
-          <img src={Popup} onMouseDown={clickHandler} style={{
-            // height:'30px', 
-            margin:'0px', padding:'0px', 
-          // border:'1px solid red'
-          }} alt='popup-sparyhead'/>
+          
         </DragNDrop>
       </Sprinkler>
       {/* <Sprinkler>
@@ -69,7 +62,7 @@ const Wrapper = styled.ul`
 `;
 
 const Sprinkler = styled.li`
-  /* border: 1px green solid; */
+  border: 1px green solid;
   height: fit-content;
   width: fit-content;
 `;
