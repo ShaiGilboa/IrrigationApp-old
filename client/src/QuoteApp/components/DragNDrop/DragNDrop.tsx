@@ -42,7 +42,7 @@ interface props {
   
   const [canDrop, setCanDrop] = React.useState<boolean>(false);
 
-  const [dropState, setDropState] = React.useState<boolean>(true)
+  const [dropState, setDropState] = React. useState<boolean>(true)
 
   const thisRef = React.useRef<HTMLDivElement | null>(null);
 
