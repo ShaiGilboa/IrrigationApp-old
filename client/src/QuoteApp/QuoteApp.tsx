@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 // import DragNDrop from './components/DragNDrop';
+import DragStorage from './components/DragStorage';
 import SprinklerMenu from './components/SprinklerMenu/SprinklerMenu';
 import ResizeDrag from './ResizeDraggable/ResizeDrag';
 
@@ -21,7 +22,7 @@ const QuoteApp : React.FC<props> = () => {
     <Wrapper>
       QuoteApp
       <DragStorage
-        ref={dragStorageRef}
+        // ref={dragStorageRef}
       >
         <ResizeDrag 
           startX={50}
@@ -52,12 +53,12 @@ export default QuoteApp;
 const Wrapper = styled.div`
 
 `;
-const DragStorage = styled.div`
-  position: relative;
-  width: 500px;
-  height: 500px;
-  border: 1px solid red;
-`;
+// const DragStorage = styled.div`
+//   position: relative;
+//   width: 500px;
+//   height: 500px;
+//   border: 1px solid red;
+// `;
 
 const DragableContent = styled.div`
 
