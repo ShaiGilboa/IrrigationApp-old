@@ -1,18 +1,12 @@
 import produce from 'immer';
+import { appState, actionMan } from './types';
 
 const initialState = {
   appStatus: 'idle',
 
 }
 //appStatus: 'idle', 'loading'
-export interface appState {
-  appStatus: string,
-}
 
-export interface actionMan {
-  type: string,
-  payload: any,
-}
 
 const appReducer = (state: appState = initialState, action: actionMan) => {
   switch (action.type) {
