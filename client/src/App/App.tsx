@@ -16,6 +16,10 @@ const App : React.FC<PropsWithChildren<props>> = () => {
   const { appStatus } = useSelector((state: RootState) => state.app);
   console.log('appStatus', appStatus);
   
+  fetch('/setup/env')
+    .then(res=>res.json())
+    .then(res=>console.log('res', res))
+
   return (
     <Wrapper>
       <GlobalStyle/>
